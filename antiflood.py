@@ -44,7 +44,8 @@ def on_message(msg):
               [str(msg['from']['id']), str(msg['chat']['id']), str(msg['from']['first_name'])]).start()
 
     elif 'new_chat_members' in msg and (msg['chat']['type'] == 'group' or msg['chat']['type'] == 'supergroup'):
-        if msg['new_chat_members'][0]['is_bot']:
+        if msg['new_chat_members'][0]['is_bot'] and msg['new_chat_members'][0]['id'] != bot.getMe()['id']:
+            # We check if it's a bot AND if it's not THIS instance of the bot
             bot.kickChatMember(msg['chat']['id'], msg['new_chat_members'][0]['id'])
 
 
