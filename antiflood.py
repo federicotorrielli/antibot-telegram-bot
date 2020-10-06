@@ -1,9 +1,10 @@
-import telepot
+import amanobot
 from threading import Thread, Timer
 import time
 from antiflood_config import token, settings
 
-data = [] #stores data
+data = []  # stores data
+
 
 def delMsg(chat_id, msg_id):
     """
@@ -17,6 +18,7 @@ def delMsg(chat_id, msg_id):
         telepot function to delete the specific message
     """
     return bot.deleteMessage((chat_id, msg_id))
+
 
 def antiflood(user_id, chat_id):
     """
@@ -58,7 +60,7 @@ def antiflood(user_id, chat_id):
         print("[!] " + str(user_id) + " banned from " + str(chat_id))
         for msg in msg_ids:
             # starts a thread for each message id to be deleted
-            Thread(target=delMsg, args=(chat_id, int(msg),),).start()
+            Thread(target=delMsg, args=(chat_id, int(msg),), ).start()
     elif counter < settings['antiflood_max_msgs']:
         data.clear()
 
@@ -70,14 +72,16 @@ def on_message(msg):
         data.append(string_to_append)
         Timer(settings['antiflood_seconds'], antiflood, [str(msg['from']['id']), str(msg['chat']['id'])]).start()
 
+
 def main(msg):
     # starts thread for main function
-    t = Thread(target=on_message, args=(msg,),)
+    t = Thread(target=on_message, args=(msg,), )
     t.start()
 
+
 if __name__ == '__main__':
-    # defines telepot client
-    bot = telepot.Bot(token)
+    # defines amanobot client
+    bot = amanobot.Bot(token)
     # loops the threaded main function
     bot.message_loop(main)
 
