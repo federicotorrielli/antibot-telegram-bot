@@ -7,42 +7,10 @@ data = []  # stores data
 
 
 def delMsg(chat_id, msg_id):
-    """
-    function used to delete a message using the message id
-
-    Args:
-        chat_id: the id of the chat so the bot knows where is the message coming from
-        msg_id: the id of the message that the bot has to delete
-    
-    Returns:
-        telepot function to delete the specific message
-    """
     return bot.deleteMessage((chat_id, msg_id))
 
 
 def antiflood(user_id, chat_id):
-    """
-    the antiflood function which starts every x seconds
-
-    Args:
-        chat_id: mentioned to see where are the messages coming from
-        user_id: mentioned to see which user is sending the messages
-
-    Purpose:
-        this antiflood function works by enumerating the data and counting how
-        many times the specified user from the specified chat sent specific amount of messages
-        and if it goes above the max allowed messages every x seconds, it bans the user
-    
-    Pseudo code example:
-        x = user id
-        y = chat id
-        if x second passes and the count of the messages of the user x in the group y is bigger than 3:
-            bans user
-            clears data
-        else if count of user x in chat y is less than 3:
-            clears data
-
-    """
     counter = 0
     # stores all the message ids to be deleted
     msg_ids = []
@@ -67,10 +35,15 @@ def antiflood(user_id, chat_id):
 
 def on_message(msg):
     # main function to be used
-    if msg['chat']['type'] == "supergroup" and "new_chat_member" not in msg and "left_chat_participant" not in msg:
+    if "new_chat_members" not in msg and "left_chat_member" not in msg and (
+            msg['chat']['type'] == "supergroup" or msg['chat']['type'] == "group"):
         string_to_append = str(msg['chat']['id']) + ":" + str(msg['from']['id']) + ":" + str(msg['message_id'])
         data.append(string_to_append)
         Timer(settings['antiflood_seconds'], antiflood, [str(msg['from']['id']), str(msg['chat']['id'])]).start()
+
+    elif 'new_chat_members' in msg and (msg['chat']['type'] == 'group' or msg['chat']['type'] == 'supergroup'):
+        if msg['new_chat_members'][0]['is_bot']:
+            bot.kickChatMember(msg['chat']['id'], msg['new_chat_members'][0]['id'])
 
 
 def main(msg):

@@ -1,5 +1,5 @@
-token = "your-token"
+token = "insert_token"
 settings = {
-    'antiflood_seconds': 1.5,
+    'antiflood_seconds': 2,
     'antiflood_max_msgs': 3
 }
