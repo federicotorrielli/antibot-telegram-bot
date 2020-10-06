@@ -1,4 +1,4 @@
-# AntiFlood-system-for-telegram
+# Antibot and antiflood bot for telegram / AKA NeeggaBot
 This is an anti flood system for telegram messenger that i created for people who need anti flood protection in their groups by other users.
 It also bans every new bot that tries to join the group or is invited to the group: be careful!
 This bot was originally a fork from another project, but since I added new functions and the project is now completely different, I created his own repository.
