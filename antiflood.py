@@ -37,7 +37,7 @@ def antiflood(user_id, chat_id, username):
 def on_message(msg):
     content_type, chat_type, chat_id = amanobot.glance(msg)
     # main function to be used
-    if content_type == 'text' and (msg['chat']['type'] == "supergroup" or msg['chat']['type'] == "group"):
+    if content_type == "text" and (msg['chat']['type'] == "supergroup" or msg['chat']['type'] == "group"):
         string_to_append = str(msg['chat']['id']) + ":" + str(msg['from']['id']) + ":" + str(msg['message_id'])
         data.append(string_to_append)
         Timer(settings['antiflood_seconds'], antiflood,
