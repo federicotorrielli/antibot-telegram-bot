@@ -1,0 +1,8 @@
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+venv/
+# Config for the program
+antiflood_config.py
